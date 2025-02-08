@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue watchEffect Complex Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="number" v-model.number="count">
+        <p>Count: {{ count }}</p>
+        <p>Squared Count: {{ squaredCount }}</p>
+        <p>WatchEffect Output: {{ effectOutput }}</p>
+    </div>
+
+    <script>
+        const { createApp, ref, computed, watchEffect } = Vue;
+
+        createApp({
+            setup() {
+                const count = ref(0);
+                const squaredCount = computed(() => count.value * count.value);
+                const effectOutput = ref('');
+
+                watchEffect(() => {
+                    effectOutput.value = `Count is ${count.value} and squared is ${squaredCount.value}`;
+                });
+
+                return {
+                    count,
+                    squaredCount,
+                    effectOutput
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

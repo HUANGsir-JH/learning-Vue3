@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Attribute Binding</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 静态属性 -->
+        <div class="container" id="main-container">
+            <!-- 动态绑定 class -->
+            <div :class="{ active: isActive, 'text-danger': isError }">
+                <!-- 动态绑定 title 属性 -->
+                <p :title="tooltip">Hover over me!</p>
+                <!-- 静态绑定 id 属性 -->
+                <!-- <input type="text" id="input-field"> -->
+                <!-- 动态绑定 disabled 属性 -->
+                <button :disabled="isDisabled">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    isActive: true,
+                    isError: false,
+                    tooltip: 'This is a tooltip message',
+                    isDisabled: true
+                };
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

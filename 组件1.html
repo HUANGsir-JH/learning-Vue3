@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 3 Component Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script>
+        const { createApp, ref, defineComponent, onMounted, watch } = Vue;
+
+        // 定义计数器组件
+        const CounterComponent = defineComponent({
+            name: 'CounterComponent',
+            // 组件的 props
+            props: {
+                initialCount: {
+                    type: Number,
+                    default: 0
+                }
+            },
+            // 组件的模板
+            template: `
+        <div>
+          <h2>{{ title }}</h2>
+          <p>Current count: {{ count }}</p>
+          <button @click="increment">Increment</button>
+          <button @click="decrement">Decrement</button>
+          <button @click="reset">Reset</button>
+        </div>
+      `,
+            // setup 函数
+            setup(props) {
+                // 响应式数据
+                const count = ref(props.initialCount);
+                const title = ref('Counter Component');
+
+                // 方法
+                const increment = () => count.value++;
+                const decrement = () => count.value--;
+                const reset = () => count.value = props.initialCount;
+
+                // 生命周期钩子
+                onMounted(() => {
+                    console.log('Component mounted with initial count:', props.initialCount);
+                });
+
+                // 侦听器
+                watch(count, (newValue, oldValue) => {
+                    console.log(`Count changed from ${oldValue} to ${newValue}`);
+                });
+
+                return {
+                    title,
+                    count,
+                    increment,
+                    decrement,
+                    reset
+                };
+            }
+        });
+
+        // 创建 Vue 应用并挂载
+        createApp({
+            components: {
+                CounterComponent
+            },
+            template: `
+        <div>
+          <h1>Welcome to Vue 3</h1>
+          <CounterComponent :initialCount="5" />
+        </div>
+      `
+      //父组件向子组件传递数据，通过在子组件标签上使用 v-bind 或简写形式 : 绑定数据。
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Event Modifiers Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <form @submit.prevent="submitForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" v-model="name">
+            <button type="submit">Submit</button>
+        </form>
+        <p>{{ message }}</p>
+    </div>
+
+    <script>
+        //.stop: 调用 event.stopPropagation()。
+        //      event.stopPropagation() 是 JavaScript 中用于阻止事件冒泡的方法。事件冒泡是指一个事件首先在最内层的目标元素上触发，然后逐层向上传播，直到 document 对象。通过调用 event.stopPropagation()，可以防止事件继续向上传播。
+        
+        // .prevent: 调用 event.preventDefault()。
+        // .capture: 使用捕获模式。
+        // .self: 只当事件发生在监听元素本身时触发处理函数。
+        // .once: 只触发一次。
+        // .passive - 通过 { passive: true } 附加一个 DOM 事件。        
+        //.{keyAlias} - 只在某些按键下触发处理函数。
+        //.middle - 只在鼠标中键事件触发处理函数。
+        //.left - 只在鼠标左键事件触发处理函数。
+        //.right - 只在鼠标右键事件触发处理函数。
+        const app = Vue.createApp({
+            data() {
+                return {
+                    name: '',
+                    message: ''
+                };
+            },
+            methods: {
+                submitForm() {
+                    this.message = `Submitted! Hello, ${this.name}`;
+                }
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

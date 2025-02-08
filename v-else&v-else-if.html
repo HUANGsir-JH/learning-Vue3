@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    <div id="app">
+        <button @click="toggleStatus">Toggle Status</button>
+        <p v-if="status === 'active'">Status is active</p>
+        <p v-else-if="status === 'inactive'">Status is inactive</p>
+        <!--和 v-else 类似，一个使用 v-else-if 的元素必须紧跟在一个 v-if 或一个 v-else-if 元素后面。-->
+        <p v-else>Status is unknown</p>
+        <!--一个 v-else 元素必须跟在一个 v-if 或者 v-else-if 元素后面，否则它将不会被识别。-->
+    </div>
+    <!--
+        对多个元素应用v-if，使用<template>标签包裹起来
+        <template v-if="condition">
+            <div>...</div>
+            <div>...</div>
+        </template>
+        在这种情况下我们可以在一个 <template> 元素上使用 v-if，这只是一个不可见的包装器元素，最后渲染的结果并不会包含这个 <template> 元素。v-else 和 v-else-if 也可以在 <template> 上使用。
+    -->
+            <!--
+                如果需要频繁切换，则使用 v-show 较好；如果在运行时绑定条件很少改变，则 v-if 会更合适。
+                v-show 与 v-if 区别在于 v-if 用于条件渲染，而 v-show 用于元素的显示和隐藏。
+            -->
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    status: 'active'
+                };
+            },
+            methods: {
+                toggleStatus() {
+                    if (this.status === 'active') {
+                        this.status = 'inactive';
+                    } else if (this.status === 'inactive') {
+                        this.status = 'unknown';
+                    } else {
+                        this.status = 'active';
+                    }
+                }
+            }
+        });
+
+        app.mount('#app');
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue v-model Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <label for="message">Enter your message:</label>
+        <input type="text" id="message" v-model="message">
+        <p>Your message: {{ message }}</p>
+    </div>
+
+    <script>
+        //仅限用于如下：
+        // <input>
+        // <select>
+        // <textarea>
+        // components组件
+
+        //修饰词：
+        //.lazy - 监听 change 事件而不是 input
+        //.number - 将输入的合法字符串转为数字
+        //.trim - 去除输入字符串的前后空格
+        const app = Vue.createApp({
+            data() {
+                return {
+                    message: ''
+                };
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

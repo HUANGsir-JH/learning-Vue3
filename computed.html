@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Computed Date Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p>Raw Date: <input type="date" v-model="rawDate"></p>
+        <p>Formatted Date: <input v-model="formattedDate"></p>
+    </div>
+
+    <script>
+        import { createApp, ref, computed } from 'vue';
+
+        const app = createApp({
+            setup() {
+                const rawDate = ref('2024-01-01');
+
+                const formattedDate = computed({
+                    get() {
+                        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                        return new Date(rawDate.value).toLocaleDateString(undefined, options);
+                    },
+                    set(newValue) {
+                        const [month, day, year] = newValue.split(' ');
+                        const monthIndex = new Date(Date.parse(`${month} 1, 2024`)).getMonth() + 1;
+                        const formattedMonth = monthIndex < 10 ? `0${monthIndex}` : monthIndex;
+                        const formattedDay = day.replace(',', '').padStart(2, '0');
+                        rawDate.value = `${year}-${formattedMonth}-${formattedDay}`;
+                    }
+                });
+
+                return {
+                    rawDate,
+                    formattedDate
+                };
+            }
+        });
+
+        app.mount('#app');
+    </script>
+
+</body>
+
+</html>

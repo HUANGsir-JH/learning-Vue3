@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Named Slots Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script>
+        const { createApp, defineComponent } = Vue;
+
+        // 定义子组件
+        const ChildComponent = defineComponent({
+            template: `
+        <div>
+          <h2>Child Component</h2>
+          <slot name="header"></slot>  <!-- 具名插槽 -->
+          <slot></slot>  <!-- 默认插槽 -->
+          <slot name="footer"></slot>  <!-- 具名插槽 -->
+        </div>
+      `
+      //在slot中使用name属性来引用具名插槽。
+        });
+
+        // 定义父组件
+        const App = defineComponent({
+            components: {
+                ChildComponent
+            },
+            template: `
+        <div>
+          <h1>Parent Component</h1>
+          <ChildComponent>
+            <template v-slot:header>
+              <p>This is the header content from the parent component.</p>
+            </template>
+            <p>This is the default content from the parent component.</p>
+            <template v-slot:footer>
+              <p>This is the footer content from the parent component.</p>
+            </template>
+          </ChildComponent>
+        </div>
+      `
+      //v-slot是具名插槽的语法糖，用来标示在子组件中的插槽名称，以便在子组件找到对应的插槽。
+        });
+
+        // 创建 Vue 应用并挂载
+        createApp(App).mount('#app');
+    </script>
+</body>
+
+</html>

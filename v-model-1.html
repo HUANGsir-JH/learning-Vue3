@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple v-model Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <custom-input v-model:text="text" v-model:number="number"></custom-input>
+        <p>Text: {{ text }}</p>
+        <p>Number: {{ number }}</p>
+    </div>
+
+    <script>
+        const { createApp, ref } = Vue;
+
+        const CustomInput = {
+            template: `
+        <div>
+          <input type="text" :value="text" @input="$emit('update:text', $event.target.value)">
+          <input type="number" :value="number" @input="$emit('update:number', $event.target.value)">
+        </div>
+      `,
+            props: ['text', 'number']
+        };
+
+        const app = createApp({
+            components: {
+                CustomInput
+            },
+            setup() {
+                const text = ref('Hello Vue!');
+                const number = ref(0);
+                return { text, number };
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

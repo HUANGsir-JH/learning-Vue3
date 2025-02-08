@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Deep Watch Array Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <button @click="addItem">Add Item</button>
+        <ul>
+            <li v-for="item in items" :key="item.id">{{ item.name }}</li>
+        </ul>
+    </div>
+
+    <script>
+        const { createApp, ref, watch } = Vue;
+
+        createApp({
+            setup() {
+                const items = ref([
+                    { id: 1, name: 'Item 1' },
+                    { id: 2, name: 'Item 2' }
+                ]);
+
+                const addItem = () => {
+                    items.value.push({ id: items.value.length + 1, name: `Item ${items.value.length + 1}` });
+                };
+
+                watch(items, (newValue, oldValue) => {
+                    console.log('Items changed:', newValue);
+                }, { deep: true });
+                //使用 deep: true 选项可以监控对象或数组的嵌套属性变化。
+                //当你需要监控复杂数据结构（如嵌套对象或数组）的内部变化时，可以使用深度监控。
+                //深度监控会增加性能开销，应该谨慎使用
+                //{immediate: true}选项可以在创建时立即执行监听函数，而不是等到数据变化后才执行
+                //{once: true}选项可以在监听函数只执行一次，然后销毁
+                return {
+                    items,
+                    addItem
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

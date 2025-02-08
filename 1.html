@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        form {
+            border: 1px solid black;
+            width: 300px;
+            height: 350px;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        input {
+            width: 150px;
+        }
+
+        span {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        button {
+            width: 100px;
+            height: 30px;
+            padding: 2px;
+        }
+
+        #help {
+            font-size: 10px;
+            margin: 10px;
+        }
+
+        .right {
+            color: black;
+        }
+
+        .error {
+            border-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <form id="app">
+        <span>学生登陆系统</span><br>
+        <label for="name">姓名：<input type="text" id="name" v-model="name"></label><br>
+        <label for="age">年龄：<input type="number" id="age" v-model="age"></label><br>
+        <label for="school">学校：
+            <select name="school" v-model="school">
+                <option value="深圳大学">深圳大学</option>
+                <option value="北京大学">北京大学</option>
+                <option value="上海交通大学">上海交通大学</option>
+                <option value="浙江大学">浙江大学</option>
+                <option value="复旦大学">复旦大学</option>
+                <option value="南京大学">南京大学</option>
+                <option value="武汉大学">武汉大学</option>
+                <option value="中山大学">中山大学</option>
+                <option value="广州大学">广州大学</option>
+                <option value="浙江师范大学">浙江师范大学</option>
+                <option value="浙江工商大学">浙江工商大学</option>
+                <option value="清华大学">清华大学</option>
+            </select>
+        </label><br>
+        <label for="email">邮箱：<input type="email" id="email" v-model="email"
+                :class="[isemailValid ? 'right' : 'error']"></label><br>
+        <label for="password">密码：<input type="password" id="password" v-model="password"
+                :class="[ispasswordValid ? 'right' : 'error']"></label><br>
+        <button type="submit" @click.prevent="sub">提交</button>
+        <span id="help"><a href="#">帮助</a></span>
+    </form>
+
+    <script>
+        const { createApp, onMounted, ref, watch, computed } = Vue;
+
+        const app = createApp({
+            setup() {
+                const name = ref("");
+                const age = ref("");
+                const school = ref("");
+                const email = ref("");
+                const password = ref("");
+
+                const ispasswordValid = ref(true);
+                const isemailValid = ref(true);
+
+                onMounted(() => {
+                    alert("欢迎使用学生登陆系统");
+                    document.getElementById('name').focus();
+                });
+
+                watch(password, (newVal) => {
+                    if (newVal.length < 6) {
+                        ispasswordValid.value = false;
+                    } else {
+                        ispasswordValid.value = true;
+                    }
+                });
+
+                watch(email, (newVal) => {
+                    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailPattern.test(newVal)) {
+                        isemailValid.value = false;
+                    } else {
+                        isemailValid.value = true;
+                    }
+                });
+
+                const sub = () => {
+                    if (ispasswordValid.value && isemailValid.value) {
+                        alert("提交成功");
+                    } else {
+                        alert("无法提交，请检查您的输入");
+                    }
+                };
+
+                return { name, age, school, email, password, ispasswordValid, isemailValid, sub };
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

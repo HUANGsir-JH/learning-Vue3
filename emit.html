@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Emit Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script>
+        const { createApp, defineComponent } = Vue;
+
+        // 定义子组件
+        const ChildComponent = defineComponent({
+            name: 'ChildComponent',
+            setup(props, { emit }) {
+                const handleClick = () => {
+                    emit('increment', 1); // 触发 increment 事件，传递参数 1
+                };
+
+                return {
+                    handleClick
+                };
+            },
+            template: `
+        <div>
+          <button @click="handleClick">Click me to increment</button>
+        </div>
+      `
+        });
+
+        // 定义父组件
+        const App = defineComponent({
+            components: {
+                ChildComponent
+            },
+            data() {
+                return {
+                    count: 0
+                };
+            },
+            methods: {
+                handleIncrement(amount) {
+                    this.count += amount;
+                }
+            },
+            template: `
+        <div>
+          <h1>Count: {{ count }}</h1>
+          <ChildComponent @increment="handleIncrement" />
+        </div>
+      `
+        });
+
+        // 创建 Vue 应用并挂载
+        createApp(App).mount('#app');
+    </script>
+</body>
+
+</html>

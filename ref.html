@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ref</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script></script>
+</head>
+
+<body>
+
+    <div id="counter"></div>
+    
+    <script>
+        const counter = Vue.createApp({
+            setup() {
+                const count = Vue.ref(0);
+
+                function increment() {
+                    if (count.value !== null) {
+                        count.value++;
+                    } else {
+                        console.error("count is null");
+                    }
+                }
+
+                return {
+                    count,
+                    increment,
+                }
+            },
+
+            template: `
+            <div>
+                <p>count: {{ count }}</p>
+                <button @click="increment">Increment</button>
+            </div>
+            `
+        });
+        counter.mount('#counter');
+
+    </script>
+</body>
+
+</html>

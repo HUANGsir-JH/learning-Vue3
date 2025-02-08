@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+<body>
+    
+    <div id="app">
+        <h2>年龄：{{ person.age }}</h2>
+        <h2>姓名：{{ person.name }}</h2>
+        <h2>车名：{{ person.car.name }}</h2>
+        <h2>车颜色：{{ person.car.color }}</h2>
+
+        <button @click="changeAge">增加年龄</button>
+        <button @click="changeName">增加姓名</button>
+        <button @click="person.car.name = '宝马'">增加车名</button>
+        <button @click="person.car.color = 'blue'">增加车颜色</button>
+        <button @click="changeCar">修改车</button>
+    </div>
+
+    <script>
+        const {reactive,watch} = Vue;
+        const app = Vue.createApp({
+            setup() {
+                let person =reactive({
+                    name:"张三",
+                    age:18,
+                    car:{
+                        name:"奔驰",
+                        color:"red"
+                    }
+                })
+                function changeAge(){
+                    person.age++;
+                }
+                function changeName(){
+                    person.name = "李四";
+                }
+                function changeCar(){
+                    person.car={
+                        name:"特斯拉",
+                        color:"pink"
+                    }
+                }
+                //watch监视一个getter函数，用于监视reactive中对象的某一个属性
+                watch(()=>{return person.age;},(newVal,oldVal)=>{
+                    console.log(newVal,oldVal);
+                })
+                watch(()=>{return person.name;},(newVal,oldVal)=>{
+                    console.log(newVal,oldVal);
+                })
+                // watch(person,(newVal,oldVal)=>{
+                //     console.log(newVal,oldVal);
+                // })//监视reactive中对象的所有属性,任何属性变化都会触发回调
+
+                //reactive里面的对象不需要写成一个getter函数，直接写对象即可
+                //对象里面任意属性变化都会触发回调
+                //但是person.car整体变化却不会触发回调
+                //注意这里的区别
+                watch(person.car,(newVal,oldVal)=>{
+                    console.log(newVal,oldVal);
+                })
+                //如果要监视整体的变化，就要写成getter函数
+                //但是这样写内部某一个属性变化不会触发回调
+                watch(()=>{return person.car;},(newVal,oldVal)=>{
+                    console.log(newVal,oldVal);
+                })
+                //如果要二者兼得，整体和局部变化都要监视到
+                //就要既要写getter函数，又要加个deep：true
+                watch(()=>{return person.car},(newVal,oldVal)=>{
+                    console.log(newVal,oldVal);
+                },{
+                    deep:true
+                })
+                //最后这种就是推荐写法！！！！！！
+
+                //建议时getter函数一把梭哈！！！
+
+
+                return {
+                    person,
+                    changeAge,
+                    changeName,
+                    changeCar
+                }
+            }
+        })
+        app.mount('#app')
+    </script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 3 Lifecycle Hooks Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <LifecycleDemo></LifecycleDemo>
+    </div>
+
+    <script>
+        const { createApp, defineComponent, onBeforeMount, onMounted, onBeforeUpdate, onUpdated, onBeforeUnmount, onUnmounted, ref, onActivated, onDeactivated } = Vue;
+
+        const LifecycleDemo = defineComponent({
+            setup() {
+                const count = ref(0);
+
+                const increment = () => {
+                    count.value++;
+                };
+
+                onBeforeMount(() => {
+                    console.log('beforeMount: 在挂载之前被调用');
+                });
+
+                onMounted(() => {
+                    console.log('mounted: 实例被挂载后调用');
+                });
+
+                onBeforeUpdate(() => {
+                    console.log('beforeUpdate: 响应式数据更新后，但虚拟 DOM 重新渲染和打补丁之前调用');
+                });
+
+                onUpdated(() => {
+                    console.log('updated: 由于数据更改导致虚拟 DOM 重新渲染和打补丁之后调用');
+                });
+
+                onBeforeUnmount(() => {
+                    console.log('beforeUnmount: 实例卸载之前调用');
+                });
+
+                onUnmounted(() => {
+                    console.log('unmounted: 实例卸载之后调用');
+                });
+
+                onActivated(() => {
+                    console.log('activated: keep-alive 组件激活时调用');
+                });
+
+                onDeactivated(() => {
+                    console.log('deactivated: keep-alive 组件停用时调用');
+                });
+
+                return {
+                    count,
+                    increment
+                };
+            },
+            template: `
+                <div>
+                    <p>Count: {{ count }}</p>
+                    <button @click="increment">Increment</button>
+                </div>
+            `
+        });
+
+        const app = createApp({});
+        app.component('LifecycleDemo', LifecycleDemo);
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

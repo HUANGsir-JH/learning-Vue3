@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Watcher Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="firstName" placeholder="First Name">
+        <input type="text" v-model="lastName" placeholder="Last Name">
+        <p>Full Name: {{ fullName }}</p>
+    </div>
+
+    <script>
+        const { createApp, ref, computed, watchEffect } = Vue;
+
+        createApp({
+            setup() {
+                const firstName = ref('');
+                const lastName = ref('');
+
+                const fullName = computed(() => {
+                    return `${firstName.value} ${lastName.value}`;
+                });
+
+                //适用于那些不需要指定具体监视属性的情况。它会自动跟踪在其函数内部访问的所有响应式属性，并在这些属性发生变化时重新执行。基本用法非常简单，只需传递一个函数，该函数会在初始化和任何响应式依赖发生变化时运行。
+                watchEffect(() => {
+                    console.log(`First Name: ${firstName.value}, Last Name: ${lastName.value}`);
+                });
+
+                return {
+                    firstName,
+                    lastName,
+                    fullName
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

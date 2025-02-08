@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-for</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+        // <li v-for="item in items" : key="item.id">
+        //     {{ item.text }}
+        // </li>
+        //指令值必须使用特殊语法 alias in expression 为正在迭代的元素提供一个别名：
+
+        //或者，你也可以为索引指定别名 (如果用在对象，则是键值)：
+        // <div v-for="(item, index) in items">
+        //     {{ index }}: {{ item }}
+        // </div>
+        // <div v-for="(value, key) in object">
+        //     {{ key }}: {{ value }}
+        //</div>
+        // <div v-for="(value, name, index) in object">//第一个是值，第二个是键，第三个是索引
+        //     {{ index }}. {{ name }}: {{ value }}
+        // </div>
+
+        //<span v-for="n in 10">{{ n }}</span>
+        //<span v-for="n in 10" :key="n">{{ n }}</span>
+        //注意这里n从1开始，而不是0！！！
+
+        //v-for 和 v-if 不建议同时使用
+    </script>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li v-for="item in items" :key="item.id">
+                {{ item.text }}
+            </li>
+        </ul>
+    </div>
+    
+    <div id="app_2">
+        <ul>
+            <li v-for="(value, key) in user" :key="key">
+                {{ key }}: {{ value }}
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    items: [
+                        { id: 1, text: 'Learn JavaScript' },
+                        { id: 2, text: 'Learn Vue' },
+                        { id: 3, text: 'Build something awesome' }
+                    ]
+                };
+            }
+        });
+
+        app.mount('#app');
+
+        const app_2 = Vue.createApp({
+                data() {
+                    return {
+                        user: {
+                            name: 'John Doe',
+                            age: 30,
+                            occupation: 'Engineer'
+                        }
+                    };
+                }
+            });
+
+            app.mount('#app_2');
+    </script>
+</body>
+</html>

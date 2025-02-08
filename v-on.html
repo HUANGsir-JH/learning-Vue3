@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue v-on Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        .counter {
+            font-size: 2em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <button @click="incrementCounter">Increment Counter</button>
+            <p class="counter">{{ counter }}</p>
+        </div>
+        <div>
+            <input type="text" @input="updateMessage" placeholder="Type something...">
+            <p>{{ message }}</p>
+        </div>
+    </div>
+
+    <script>
+        const app = Vue.createApp({
+            data() {
+                return {
+                    counter: 0,
+                    message: ''
+                };
+            },
+            methods: {
+                incrementCounter() {
+                    this.counter++;
+                },
+                updateMessage(event) {
+                    this.message = event.target.value;
+                }
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

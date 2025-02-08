@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Watcher Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" v-model="message">
+        <p>{{ message }}</p>
+        <p>Uppercased Message: {{ uppercasedMessage }}</p>
+    </div>
+
+    <script>
+        const { createApp, ref, watch, computed } = Vue;
+
+        createApp({
+            setup() {
+                const message = ref('');
+
+                const uppercasedMessage = computed(() => {
+                    return message.value.toUpperCase();
+                });
+
+                //watch接收两个参数，第一个是要监听的响应式数据（ref，reactive），第二个是回调函数
+                watch(message, (newValue, oldValue) => {
+                    console.log(`Message changed from "${oldValue}" to "${newValue}"`);
+                });//接收的参数固定为前面是新的值，后面是旧的值，由vue自动监听
+
+                return {
+                    message,
+                    uppercasedMessage
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>

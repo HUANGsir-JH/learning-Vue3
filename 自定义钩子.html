@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue 3 Custom Hook Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p>Window Width: {{ windowWidth }}</p>
+        <button @click="toggleTracking">Toggle Window Width Tracking</button>
+    </div>
+
+    <script>
+        const { createApp, ref, onMounted, onUnmounted } = Vue;
+
+        // 自定义钩子：useWindowWidth
+        function useWindowWidth() {
+            const windowWidth = ref(window.innerWidth);
+
+            const updateWidth = () => {
+                windowWidth.value = window.innerWidth;
+            };
+
+            onMounted(() => {
+                window.addEventListener('resize', updateWidth);
+            });
+
+            onUnmounted(() => {
+                window.removeEventListener('resize', updateWidth);
+            });
+
+            return windowWidth;
+        }
+
+        const App = {
+            setup() {
+                const windowWidth = useWindowWidth();
+                const tracking = ref(true);
+
+                const toggleTracking = () => {
+                    tracking.value = !tracking.value;
+                    if (tracking.value) {
+                        window.addEventListener('resize', updateWidth);
+                    } else {
+                        window.removeEventListener('resize', updateWidth);
+                    }
+                };
+
+                const updateWidth = () => {
+                    windowWidth.value = window.innerWidth;
+                };
+
+                return {
+                    windowWidth,
+                    toggleTracking
+                };
+            }
+        };
+
+        createApp(App).mount('#app');
+    </script>
+</body>
+
+</html>

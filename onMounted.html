@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue onMounted Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <input type="text" ref="inputRef" v-model="message">
+        <p>{{ message }}</p>
+    </div>
+
+    <script>
+        const { createApp, ref, onMounted } = Vue;
+
+        const app = createApp({
+            setup() {
+                const message = ref('Hello Vue!');
+                const inputRef = ref(null);
+                //模板引用——也就是指向模板中一个 DOM 元素的 ref。
+                //要访问该引用，我们需要声明并暴露一个同名的 ref
+                //这其实就是手动操作 DOM 元素的方式。
+                //注意这个 ref 使用 null 值来初始化。这是因为当 setup() 执行时，DOM 元素还不存在。模板引用 ref 只能在组件挂载后访问
+                onMounted(() => {
+                    // 在组件挂载后自动聚焦输入框
+                    inputRef.value.focus();
+                    //生命周期钩子——它允许我们注册一个在组件的特定生命周期调用的回调函数。
+                });
+
+                return {
+                    message,
+                    inputRef
+                };
+            }
+        });
+
+        app.mount('#app');
+    </script>
+</body>
+
+</html>

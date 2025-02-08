@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Component Example</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+</head>
+
+<body>
+    <div id="app"></div>
+
+    <script>
+        const { createApp, ref, defineComponent, onMounted } = Vue;
+
+        // 定义子组件 MyComponent
+        const MyComponent = defineComponent({
+            name: 'MyComponent',
+            props: {
+                title: {
+                    type: String,
+                    required: true
+                }
+            },
+            template: 
+        `
+        <div>
+          <h2>{{ title }}</h2>
+          <button @click="notifyParent">Notify Parent</button>
+        </div>
+      `,
+            setup(props, { emit }) {
+                const notifyParent = () => {
+                    emit('customEvent', 'Hello from MyComponent');
+                    // 通知父组件,第一个参数是事件名，第二个参数是事件参数
+                };
+                return {
+                    notifyParent
+                };
+            }
+        });
+
+        // 定义父组件 App
+        const App = defineComponent({
+            components: {
+                MyComponent
+            },
+            template: `
+        <div>
+          <h1>Welcome to Vue 3</h1>
+          <MyComponent title="Hello from MyComponent" @customEvent="handleCustomEvent" />
+          <input ref="inputElement" type="text" placeholder="Focus on mount" />
+        </div>
+      `,
+            setup() {
+                const inputElement = ref(null);
+
+                onMounted(() => {
+                    inputElement.value.focus();
+                });
+
+                const handleCustomEvent = (message) => {
+                    alert(message);
+                };
+
+                return {
+                    inputElement,
+                    handleCustomEvent
+                };
+            }
+        });
+
+        // 创建 Vue 应用并挂载
+        createApp(App).mount('#app');
+    </script>
+</body>
+
+</html>
